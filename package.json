@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node-dev index --clear --notify=false",
     "start": "node index",
-    "build": "npm run build"
+    "build": "git submodule update --recursive --remote & npm i --prefix inte-pilori & npm run build --prefix inte-pilori"
   },
   "repository": {
     "type": "git",
