@@ -22,3 +22,81 @@ CREATE TABLE "website" (
 );
 
 COMMIT;
+
+
+
+
+
+
+
+-- CATEGORY (id, code_category, name), 
+-- PRODUCT_HAS_INGREDIENT (#code_product, #code_ingredient), 
+-- ORDER_HAS_PRODUCT (#code_product, #code_order, quantity), 
+-- INGREDIENT (id, code_ingredient, name), 
+-- ORDER (id, code_order, collec_hour, created_at, #code_user), 
+-- PRODUCT (id, code_product, name, description, price, #code_category), 
+-- USER (id, code_user, pseudo, email, password, role)
+
+
+-- BEGIN;
+
+-- DROP TABLE IF EXISTS "CATEGORY", "INGREDIENT","USER", "PRODUCT","ORDER", "ORDER_HAS_INGREDIENT", "ORDER_HAS_PRODUCT",
+
+-- CREATE TABLE "CATEGORY" (
+--   "id" INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+--   "code_category" TEXT UNIQUE NOT NULL,
+--   "name" TEXT NOT NULL
+-- );
+
+-- CREATE TABLE "INGREDIENT" (
+--   "id" INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+--   "code_ingredient" TEXT UNIQUE NOT NULL,
+--   "name" TEXT NOT NULL
+-- );
+
+-- CREATE TABLE "USER" (
+--   "id" INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+--   "code_user" TEXT UNIQUE NOT NULL,
+--   "pseudo" TEXT NOT NULL,
+--   "email" TEXT UNIQUE NOT NULL,
+--   "password" TEXT NOT NULL,
+--   "role" TEXT NOT NULL
+-- );
+
+-- CREATE TABLE "PRODUCT" (
+--   "id" INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+--   "code_product" TEXT UNIQUE NOT NULL,
+--   "name" TEXT NOT NULL,
+--   "description" TEXT DEFAULT 'Prochainement...',
+--   "price" DECIMAL NOT NULL,
+--   "code_category" INTEGER REFERENCES "CATEGORY"("id") NOT NULL
+-- );
+
+-- CREATE TABLE "ORDER" (
+--   "id" INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+--   "code_order" TEXT UNIQUE NOT NULL,
+--   "collec_hour" TEXT NOT NULL,
+--   "created_at" TIMESTAMP NOT NULL,
+--   "code_user" INTEGER REFERENCES "USER"("id") NOT NULL
+-- );
+
+-- CREATE TABLE "PRODUCT_HAS_INGREDIENT" (
+--   "code_product" TEXT REFERENCES "PRODUCT"("code_product"),
+--   "code_ingredient" TEXT REFERENCES "INGREDIENT"("code_ingredient")
+-- );
+
+-- CREATE TABLE "ORDER_HAS_PRODUCT" (
+--   "code_product" TEXT REFERENCES "PRODUCT"("code_product"),
+--   "code_order" TEXT REFERENCES "ORDER"("code_order"),
+--   "quantity" INTEGER NOT NULL
+-- );
+
+-- COMMIT;
+
+
+-- -- On se connecte à notre superUtilisateur dans postgresSQL pui on saisit les commandes :
+-- CREATE USER boulanger WITH PASSWORD 'boulanger';
+-- GRANT ALL PRIVILEGES ON DATABASE boulangerbdd TO boulanger;
+-- CREATE DATABASE boulangerbdd OWNER boulanger ;
+-- -- On peut ensuite se connecter à notre bdd 
+-- psql -U boulanger -d boulangerbdd;

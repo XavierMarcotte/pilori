@@ -2,7 +2,6 @@ import validator from "validator";
 import client from "../database.js";
 
 class User {
-  
   #id;
   #email;
   #hash;
@@ -12,7 +11,7 @@ class User {
     this.email = config.email;
     this.hash = config.hash;
   }
-  
+
   get id() {
     return this.#id;
   }
@@ -24,24 +23,24 @@ class User {
   get hash() {
     return this.#hash;
   }
-  
+
   set id(value) {
-    if (typeof value !== 'number' && typeof value !== 'undefined') {
-      throw new Error('Id incorrect');
+    if (typeof value !== "number" && typeof value !== "undefined") {
+      throw new Error("Id incorrect");
     }
     this.#id = value;
   }
 
   set email(value) {
     if (!validator.isEmail(value)) {
-      throw new Error('Email invalide');
+      throw new Error("Email invalide");
     }
     this.#email = value;
   }
 
   set hash(value) {
     if (!value) {
-      throw new Error('Mot de passe invalide');
+      throw new Error("Mot de passe invalide");
     }
     this.#hash = value;
   }
@@ -51,10 +50,10 @@ class User {
       INSERT INTO "user" ("email", "hash")
       VALUES ($1, $2)
       RETURNING id;
-    `; 
+    `;
     const values = [this.email, this.hash];
     const result = await client.query(text, values);
-    this.#id = result.rows[0].id; 
+    this.#id = result.rows[0].id;
   }
 
   static async read(id) {
@@ -66,9 +65,8 @@ class User {
     const result = await client.query(text, values);
     if (result.rowCount > 0) {
       return new User(result.rows[0]);
-    }
-    else {
-      throw new Error('User non trouvé');
+    } else {
+      throw new Error("User non trouvé");
     }
   }
 
@@ -80,7 +78,7 @@ class User {
         "hash" = $2
       WHERE id = $3;
     `;
-    const values = [this.emaill, this.hash, this.id];
+    const values = [this.email, this.hash, this.id];
     client.query(text, values);
   }
 
