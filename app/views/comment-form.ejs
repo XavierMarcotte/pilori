@@ -1,0 +1,24 @@
+<%- include('partials/header') %>
+<main class="content">
+  <% if(typeof message !== 'undefined') { %>
+  <div class="message message--error"><%= message %></div>
+  <% } %>
+  <section class="segment">
+    <h2 class="segment-title">Ajouter un commentaire</h2>
+    <form method="POST" action="/tomates/<%= slug %>/commentaire" class="form">
+      <label class="form-field">
+        Votre commentaire
+        <textarea
+          name="description"
+          class="form-input form-input--long"
+        ></textarea>
+      </label>
+      <div class="segment-actions">
+        <button type="submit" class="btn">
+          Ajouter votre commentaire au signalement
+        </button>
+      </div>
+    </form>
+  </section>
+</main>
+<%- include('partials/footer') %>

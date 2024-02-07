@@ -1,8 +1,7 @@
 function addUserData(req, res, next) {
   if (req.session.isLogged) {
     res.locals.isLogged = true;
-  }
-  else {
+  } else {
     res.locals.isLogged = false;
   }
   next();

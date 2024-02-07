@@ -4,6 +4,7 @@ import websiteController from "./controllers/websiteController.js";
 import authController from "./controllers/authController.js";
 import userController from "./controllers/userController.js";
 import isLogged from "./middlewares/isLogged.js";
+import commentController from "./controllers/commentController.js";
 
 const router = express.Router();
 
@@ -14,9 +15,20 @@ router.get("/plan", mainController.plan);
 router.get("/contact", mainController.contact);
 
 router.get("/tomates", websiteController.all);
-router.get("/tomates/denoncer", websiteController.form);
-router.post("/tomates/denoncer", websiteController.formAction);
+router.get("/tomates/denoncer", isLogged, websiteController.form);
+router.post("/tomates/denoncer", isLogged, websiteController.formAction);
 router.get("/tomates/:slug", websiteController.details);
+
+router.get(
+  "/tomates/:slug/commentaire",
+  isLogged,
+  commentController.formComment
+);
+router.post(
+  "/tomates/:slug/commentaire",
+  isLogged,
+  commentController.formActionComment
+);
 
 router.get("/connexion", authController.login);
 router.post("/connexion", authController.loginAction);
@@ -32,6 +44,10 @@ router.get("/api/website", websiteController.allJson);
 router.get("/api/website/:id", websiteController.detailsJson);
 router.delete("/api/website/:id", websiteController.delete);
 router.post("/api/website", websiteController.create);
+
+router.get("/api/comment", commentController.allJsonComment);
+router.delete("/api/comment/:id", commentController.deleteComment);
+router.post("/api/comment", commentController.createComment);
 
 router.use(mainController.notFound);
 

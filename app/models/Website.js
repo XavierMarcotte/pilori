@@ -3,7 +3,6 @@ import slugify from "slugify";
 import client from "../database.js";
 
 class Website {
-
   #id;
   #title;
   #slug;
@@ -11,6 +10,7 @@ class Website {
   #address;
   #device;
   #level;
+  #user_id;
 
   constructor(config) {
     this.id = config.id;
@@ -23,8 +23,9 @@ class Website {
     this.address = config.address;
     this.device = config.device;
     this.level = config.level;
+    this.user_id = config.user_id;
   }
-  
+
   get id() {
     return this.#id;
   }
@@ -52,24 +53,28 @@ class Website {
   get level() {
     return this.#level;
   }
-  
+
+  get user_id() {
+    return this.#user_id;
+  }
+
   set id(value) {
-    if (typeof value !== 'number' && typeof value !== 'undefined') {
-      throw new Error('Id incorrect');
+    if (typeof value !== "number" && typeof value !== "undefined") {
+      throw new Error("Id incorrect");
     }
     this.#id = value;
   }
 
   set title(value) {
-    if (typeof value !== 'string' || value.trim() === '') {
-      throw new Error('Titre incorrect');
+    if (typeof value !== "string" || value.trim() === "") {
+      throw new Error("Titre incorrect");
     }
     this.#title = value.trim();
   }
 
   set slug(value) {
-    if (typeof value !== 'string' || value.trim() === '') {
-      throw new Error('Slug incorrect');
+    if (typeof value !== "string" || value.trim() === "") {
+      throw new Error("Slug incorrect");
     }
     this.#slug = value.trim();
   }
@@ -80,36 +85,47 @@ class Website {
 
   set address(value) {
     if (!validator.isURL(value)) {
-      throw new Error('Adresse incorrecte');
+      throw new Error("Adresse incorrecte");
     }
     this.#address = value;
   }
 
   set device(value) {
-    const allowedValues = ['Mobile', 'Ordinateur', 'Lecteur d\'écran'];
-    if (typeof value !== 'undefined' && !allowedValues.includes(value)) {
-      throw new Error(`3 valeurs autorisées : ${allowedValues.join(', ')}`);
+    const allowedValues = ["Mobile", "Ordinateur", "Lecteur d'écran"];
+    if (typeof value !== "undefined" && !allowedValues.includes(value)) {
+      throw new Error(`3 valeurs autorisées : ${allowedValues.join(", ")}`);
     }
     this.#device = value;
   }
 
   set level(value) {
-    const allowedValues = ['Bloquant', 'Gênant', 'Casse-tête'];
-    if (typeof value !== 'undefined' && !allowedValues.includes(value)) {
-      throw new Error(`3 valeurs autorisées : ${allowedValues.join(', ')}`);
+    const allowedValues = ["Bloquant", "Gênant", "Casse-tête"];
+    if (typeof value !== "undefined" && !allowedValues.includes(value)) {
+      throw new Error(`3 valeurs autorisées : ${allowedValues.join(", ")}`);
     }
     this.#level = value;
   }
 
+  set user_id(value) {
+    this.#user_id = value;
+  }
+
   async create() {
     const text = `
-      INSERT INTO website ("title", "slug", "description", "address", "device", "level")
-      VALUES ($1, $2, $3, $4, $5, $6)
-      RETURNING id;
-    `; 
-    const values = [this.title, this.slug, this.description, this.address, this.device, this.level];
+      INSERT INTO website ("title", "slug", "description", "address", "device", "level", "user_id")
+      VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id;
+    `;
+    const values = [
+      this.title,
+      this.slug,
+      this.description,
+      this.address,
+      this.device,
+      this.level,
+      this.user_id,
+    ];
     const result = await client.query(text, values);
-    this.#id = result.rows[0].id; 
+    this.#id = result.rows[0].id;
   }
 
   static async read(id) {
@@ -121,9 +137,8 @@ class Website {
     const result = await client.query(text, values);
     if (result.rowCount > 0) {
       return new Website(result.rows[0]);
-    }
-    else {
-      throw new Error('Website non trouvé');
+    } else {
+      throw new Error("Website non trouvé");
     }
   }
 
@@ -139,7 +154,15 @@ class Website {
         "level" = $6
       WHERE id = $7;
     `;
-    const values = [this.name, this.slug, this.description, this.address, this.device, this.level, this.id];
+    const values = [
+      this.name,
+      this.slug,
+      this.description,
+      this.address,
+      this.device,
+      this.level,
+      this.id,
+    ];
     client.query(text, values);
   }
 
@@ -151,7 +174,6 @@ class Website {
     const values = [this.id];
     client.query(text, values);
   }
-
 }
 
 export default Website;

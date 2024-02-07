@@ -749,3 +749,22 @@ a:hover {
 .segment-tools .btn svg {
   margin-right: 0;
 }
+
+.comment-h2 {
+  font-size: 1.1em;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+.comment-section {
+  margin: 1rem auto;
+  padding: 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background-color: var(--background);
+  position: relative;
+}
+.comment-date {
+  position: absolute;
+  right: 1rem;
+  bottom: 0;
+}

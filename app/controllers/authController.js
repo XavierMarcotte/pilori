@@ -10,17 +10,14 @@ const authController = {
 
   loginAction: async function (req, res) {
     try {
-      // on cherche un user par son email
       const foundUser = await client.query(
         'SELECT * FROM "user" WHERE "email" = $1',
         [req.body.email]
       );
       if (foundUser.rowCount > 0) {
         const user = foundUser.rows[0];
-        // si on a trouvé on check le mot de passe, à noter qu'on a utilisé la syntaxe async await avec bcrypt, bien plus sympa
         const result = await bcrypt.compare(req.body.password, user.hash);
         if (result) {
-          // si c'est ok on est connecté
           req.session.isLogged = true;
           req.session.userId = user.id;
           res.redirect("/profil");
@@ -44,7 +41,6 @@ const authController = {
 
   signupAction: async function (req, res) {
     try {
-      // on valide le mot de passe
       const options = {
         minLength: 12,
         minLowercase: 1,
@@ -57,14 +53,10 @@ const authController = {
           "Le mot de passe doit comporter au moins 12 caractères et au moins 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial"
         );
       }
-      // on crée le hash
       const hash = await bcrypt.hash(req.body.password, 10);
       req.body.hash = hash;
-      // on crée un objet user
       const user = new User(req.body);
-      // qu'on fait persister en bdd
       await user.create();
-      // pour que l'utilisateur reste connecté on le mémorise en session
       req.session.isLogged = true;
       req.session.userId = user.id;
       res.redirect("/profil");
