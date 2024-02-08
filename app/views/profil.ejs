@@ -2,9 +2,17 @@
 <main class="content">
   <h1 class="content-title">Mon compte</h1>
   <section class="segment">
-    <h2 class="segment-title">
-      <%= user.email %>
-    </h2>
+    <h2 class="segment-title"><%= user.email %></h2>
+  </section>
+  <section class="segment">
+    <h2 class="segment-title">Mes sites dénoncés</h2>
+    <% for (const website of websites) { %> <%- include('partials/card' , {
+    website }) %> <% } %>
+  </section>
+  <section class="segment">
+    <h2 class="segment-title">Mes commentaires ajoutés</h2>
+    <% for (const comment of comments) { %> <%- include('partials/comment' , {
+    comment }) %> <% } %>
   </section>
 </main>
 <%- include('partials/footer') %>

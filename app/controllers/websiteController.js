@@ -76,17 +76,19 @@ const websiteController = {
   details: async function (req, res, next) {
     try {
       const { slug } = req.params;
-      console.log(slug);
       const result = await client.query(
         "SELECT * FROM website WHERE slug = $1",
         [slug]
       );
-      const allcomment = "SELECT * FROM comment ORDER BY id DESC";
-      const resultcomment = await client.query(allcomment);
+      const websiteQuery = `SELECT * FROM website WHERE slug = $1`;
+      const websiteResult = await client.query(websiteQuery, [slug]);
+      const websiteId = websiteResult.rows[0].id;
+      const commentQuery = `SELECT * FROM comment WHERE website_id = $1`;
+      const commentResult = await client.query(commentQuery, [websiteId]);
       if (result.rowCount > 0) {
         res.render("detail", {
           website: result.rows[0],
-          comments: resultcomment.rows,
+          comments: commentResult.rows,
         });
       } else {
         next();
