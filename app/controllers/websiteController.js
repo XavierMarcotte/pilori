@@ -22,7 +22,7 @@ const websiteController = {
         }
       } else {
         const websites = await client.query(
-          "SELECT * FROM website ORDER BY id DESC"
+          `SELECT *, (SELECT COUNT(*) FROM "comment" WHERE "website_id" = "website"."id") AS total_comments FROM "website" `
         );
         res.render("list", {
           title: "Toutes les tomates",

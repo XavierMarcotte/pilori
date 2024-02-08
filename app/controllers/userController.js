@@ -6,7 +6,7 @@ const userController = {
     try {
       const user = await User.read(req.session.userId);
       const userId = req.session.userId;
-      const websiteQuery = `SELECT * FROM website WHERE user_id = $1`;
+      const websiteQuery = `SELECT *, (SELECT COUNT(*) FROM "comment" WHERE "website_id" = "website"."id") AS total_comments FROM "website" WHERE user_id = $1`;
       const websiteResult = await client.query(websiteQuery, [userId]);
       const commentQuery = `SELECT * FROM comment WHERE user_id = $1`;
       const commentResult = await client.query(commentQuery, [userId]);

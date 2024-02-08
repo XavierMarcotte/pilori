@@ -1,43 +1,43 @@
 import client from "../database.js";
 
 const mainController = {
-
-  home: async function(req, res) {
+  home: async function (req, res) {
     try {
-      const result = await client.query('SELECT * FROM "website" ORDER BY id DESC LIMIT 3');
-      res.render('home', {
-        websites: result.rows,
+      const websitesResult = await client.query(
+        'SELECT *, (SELECT COUNT(*) FROM "comment" WHERE "website_id" = "website"."id") AS total_comments FROM "website" ORDER BY id DESC LIMIT 3'
+      );
+      res.render("home", {
+        websites: websitesResult.rows,
       });
-    } catch(error) {
+    } catch (error) {
       console.error(error);
-      res.status(500).render('error');
+      res.status(500).render("error");
     }
   },
 
-  legals: function(req, res) {
-    res.render('coming-soon', {
-      title: 'Mentions légales',
+  legals: function (req, res) {
+    res.render("coming-soon", {
+      title: "Mentions légales",
     });
   },
 
-  plan: function(req, res) {
-    res.render('coming-soon', {
-      title: 'Plan du site',
+  plan: function (req, res) {
+    res.render("coming-soon", {
+      title: "Plan du site",
     });
   },
 
-  contact: function(req, res) {
-    res.render('coming-soon', {
-      title: 'Contact',
+  contact: function (req, res) {
+    res.render("coming-soon", {
+      title: "Contact",
     });
   },
 
-  notFound: function(req, res) {
-    res.status(404).render('error', {
-      message: 'La page demandée n\'a pas été trouvée.',
+  notFound: function (req, res) {
+    res.status(404).render("error", {
+      message: "La page demandée n'a pas été trouvée.",
     });
-  }
-
+  },
 };
 
 export default mainController;
