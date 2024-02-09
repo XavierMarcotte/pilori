@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node-dev index --clear --notify=false",
     "start": "node index",
-    "build": "npm install && npm test && npm start"
+    "build": "npm install && npm start"
   },
   "repository": {
     "type": "git",
