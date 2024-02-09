@@ -4,7 +4,6 @@ import * as dotenv from "dotenv";
 import router from "./app/router.js";
 import addUserData from "./app/middlewares/addUserData.js";
 import cors from "cors";
-import isLogged from "./app/middlewares/isLogged.js";
 
 dotenv.config();
 
