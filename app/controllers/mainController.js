@@ -1,9 +1,11 @@
 import client from "../database.js";
+// import pool from "../database.js";
 
 const mainController = {
   home: async function (req, res) {
     try {
       const websitesResult = await client.query(
+        // const websitesResult = await pool.query(
         'SELECT *, (SELECT COUNT(*) FROM "comment" WHERE "website_id" = "website"."id") AS total_comments FROM "website" ORDER BY id DESC LIMIT 3'
       );
       res.render("home", {

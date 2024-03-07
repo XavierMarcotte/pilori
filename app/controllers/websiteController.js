@@ -1,5 +1,6 @@
 import Website from "../models/Website.js";
 import client from "../database.js";
+import fs from "fs";
 
 const websiteController = {
   all: async function (req, res) {
@@ -42,7 +43,8 @@ const websiteController = {
   formAction: async function (req, res) {
     try {
       const user_id = req.session.userId;
-      const website = new Website({ ...req.body, user_id });
+      const image = req.file.filename;
+      const website = new Website({ ...req.body, user_id, image });
       await website.create();
       res.redirect("/tomates/" + website.slug);
     } catch (error) {

@@ -1,22 +1,32 @@
 <section class="segment">
   <% if(typeof message !== 'undefined') { %>
-    <div class="message message--error">
-      <%= message %>
-    </div>
+  <div class="message message--error"><%= message %></div>
   <% } %>
   <h2 class="segment-title">Dénoncer un site inaccessible</h2>
-  <form method="POST" action="/tomates/denoncer" class="form">
+  <form
+    method="POST"
+    action="/tomates/denoncer"
+    class="form"
+    enctype="multipart/form-data"
+  >
     <label class="form-field">
       Titre du dysfonctionnement
-      <input name="title" type="text" class="form-input">
+      <input name="title" type="text" class="form-input" />
     </label>
     <label class="form-field">
       Description
-      <textarea name="description" class="form-input form-input--long"></textarea>
+      <textarea
+        name="description"
+        class="form-input form-input--long"
+      ></textarea>
     </label>
     <label class="form-field">
       Adresse de la page web
-      <input name="address" type="url" class="form-input">
+      <input name="address" type="url" class="form-input" />
+    </label>
+    <label class="form-field">
+      Photo du site (non obligatorie)
+      <input name="image" type="file" class="form-input" accept="image/*" />
     </label>
     <label class="form-field">
       Sur quel type de support
@@ -35,7 +45,9 @@
       </select>
     </label>
     <div class="segment-actions">
-      <button type="submit" class="btn">Soumette le dysfonctionnement à l'équipe de modération</button>
+      <button type="submit" class="btn">
+        Soumette le dysfonctionnement à l'équipe de modération
+      </button>
     </div>
   </form>
 </section>

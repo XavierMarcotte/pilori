@@ -18,7 +18,8 @@ CREATE TABLE "website" (
   "address" TEXT NOT NULL,
   "device" TEXT,
   "level" TEXT,
-  "user_id" INTEGER REFERENCES "user"("id")
+  "user_id" INTEGER REFERENCES "user"("id"),
+  "image" TEXT
 );
 
 

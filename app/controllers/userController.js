@@ -10,10 +10,12 @@ const userController = {
       const websiteResult = await client.query(websiteQuery, [userId]);
       const commentQuery = `SELECT * FROM comment WHERE user_id = $1`;
       const commentResult = await client.query(commentQuery, [userId]);
+      // const getUrl = window.location.pathname;
       res.render("profil", {
         user: user,
         websites: websiteResult.rows,
         comments: commentResult.rows,
+        // currentPage: getUrl,
       });
     } catch (error) {
       console.error(error);

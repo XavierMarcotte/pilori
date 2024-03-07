@@ -327,6 +327,9 @@ a:hover {
   justify-content: space-between;
   display: flex;
 }
+.card-img {
+  max-height: 14rem;
+}
 .card-tags {
   z-index: 1;
   display: flex;

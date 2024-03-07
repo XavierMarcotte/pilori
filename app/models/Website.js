@@ -11,6 +11,7 @@ class Website {
   #device;
   #level;
   #user_id;
+  #image;
 
   constructor(config) {
     this.id = config.id;
@@ -24,6 +25,7 @@ class Website {
     this.device = config.device;
     this.level = config.level;
     this.user_id = config.user_id;
+    this.image = config.image;
   }
 
   get id() {
@@ -56,6 +58,10 @@ class Website {
 
   get user_id() {
     return this.#user_id;
+  }
+
+  get image() {
+    return this.#image;
   }
 
   set id(value) {
@@ -110,10 +116,14 @@ class Website {
     this.#user_id = value;
   }
 
+  set image(value) {
+    this.#image = value;
+  }
+
   async create() {
     const text = `
-      INSERT INTO website ("title", "slug", "description", "address", "device", "level", "user_id")
-      VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id;
+      INSERT INTO website ("title", "slug", "description", "address", "device", "level", "user_id", "image")
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id;
     `;
     const values = [
       this.title,
@@ -123,6 +133,7 @@ class Website {
       this.device,
       this.level,
       this.user_id,
+      this.image,
     ];
     const result = await client.query(text, values);
     this.#id = result.rows[0].id;
@@ -155,7 +166,7 @@ class Website {
       WHERE id = $7;
     `;
     const values = [
-      this.name,
+      this.title,
       this.slug,
       this.description,
       this.address,

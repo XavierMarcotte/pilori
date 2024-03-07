@@ -71,11 +71,8 @@ const commentController = {
   deleteComment: async function (req, res) {
     try {
       const { id } = req.params;
-
       const comment = await Comment.read(id);
-
       const result = await comment.delete();
-
       if (result.rowCount > 0) {
         res.json({
           message: "Commentaire supprimé",

@@ -16,12 +16,12 @@ VALUES
 
 -- $2b$10$2woNoucdg00SlRj7GradG.VwUS1uQWPYfhTmWCn0UeXD47NAYLxNW = Utilisateur-7805
 
-INSERT INTO "website" ("title", "slug", "description", "address", "device", "level")
+INSERT INTO "website" ("title", "slug", "description", "address", "device", "level", "image")
 VALUES 
-('Google', 'google', 'Il y a un tout petit problème.', 'https://www.google.com/', 'Ordinateur', 'Casse-tête'),
-('Wikipédia', 'wikipedia', 'Pas jojo', 'https://fr.wikipedia.org/', 'Mobile', 'Bloquant'),
-('Facebook', 'facebook', 'Nul', 'https://facebook.com/', 'Mobile', 'Bloquant'),
-('Npm', 'npm', 'Des soucis', 'https://www.npmjs.com/', 'Mobile', 'Casse-tête');
+('Google', 'google', 'Il y a un tout petit problème.', 'https://www.google.com/', 'Ordinateur', 'Casse-tête', 'ph1.jpg'),
+('Wikipédia', 'wikipedia', 'Pas jojo', 'https://fr.wikipedia.org/', 'Mobile', 'Bloquant', 'ph2.jpg'),
+('Facebook', 'facebook', 'Nul', 'https://facebook.com/', 'Mobile', 'Bloquant', 'ph3.jpg'),
+('Npm', 'npm', 'Des soucis', 'https://www.npmjs.com/', 'Mobile', 'Casse-tête', 'ph4.jpg');
 
 
 -- INSERT INTO "comment" ("description") 
