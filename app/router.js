@@ -9,6 +9,7 @@ import commentController from "./controllers/commentController.js";
 
 const router = express.Router();
 
+//Pour gérer l'enrengistrement d'image (dans le dossier public/uploads)
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "public/uploads");
@@ -57,14 +58,14 @@ router.get("/profil", isLogged, userController.profil);
 
 // on appelle endpoint une route, une url qui donnera lieu à un résultat dans notre api
 // notre api est une liste de endpoint (d'adresses) qui donneront lieu à un résultat
-// router.get("/api/website", websiteController.allJson);
-// router.get("/api/website/:id", websiteController.detailsJson);
-// router.delete("/api/website/:id", websiteController.delete);
-// router.post("/api/website", websiteController.create);
+router.get("/api/website", websiteController.allJson);
+router.get("/api/website/:id", websiteController.detailsJson);
+router.delete("/api/website/:id", websiteController.delete);
+router.post("/api/website", websiteController.create);
 
-// router.get("/api/comment/:id", commentController.allJsonComment);
-// router.delete("/api/comment/:id", commentController.deleteComment);
-// router.post("/api/comment", commentController.createComment);
+router.get("/api/comment", commentController.allJsonComment);
+router.delete("/api/comment/:id", commentController.deleteComment);
+router.post("/api/comment", commentController.createComment);
 
 router.use(mainController.notFound);
 

@@ -49,15 +49,12 @@ const commentController = {
 
   allJsonComment: async function (req, res) {
     try {
-      const { id } = req.params;
-      const result = await client.query("SELECT * FROM comment WHERE id = $1", [
-        id,
-      ]);
+      const result = await client.query("SELECT * FROM comment");
       if (result.rowCount > 0) {
-        res.json(result.rows[0]);
+        res.json(result.rows);
       } else {
         res.status(404).json({
-          message: "Le commentaire demandé n'existe pas.",
+          message: "Les commentaires demandé n'existe pas.",
         });
       }
     } catch (error) {

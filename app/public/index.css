@@ -431,6 +431,15 @@ a:hover {
     font-size: 4em;
   }
 }
+.detail-intro {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.detail-image {
+  max-width: 5em;
+  max-height: 5em;
+}
 .detail-title {
   font-size: 2em;
   font-weight: 700;
