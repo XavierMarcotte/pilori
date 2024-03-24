@@ -179,11 +179,12 @@ class Website {
 
   async delete() {
     const text = `
-      DELETE FROM website 
-      WHERE id = $1;
+        DELETE FROM website 
+        WHERE slug = $1;
     `;
-    const values = [this.id];
-    client.query(text, values);
+    const values = [this.slug];
+    const result = await client.query(text, values);
+    return result;
   }
 }
 

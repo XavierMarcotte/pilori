@@ -2,6 +2,7 @@ import validator from "validator";
 import bcrypt from "bcrypt";
 import User from "../models/User.js";
 import client from "../database.js";
+import jwt from "jsonwebtoken";
 
 const authController = {
   login: function (req, res) {
@@ -14,24 +15,39 @@ const authController = {
         'SELECT * FROM "user" WHERE "email" = $1',
         [req.body.email]
       );
+      console.log(foundUser);
       if (foundUser.rowCount > 0) {
         const user = foundUser.rows[0];
         const result = await bcrypt.compare(req.body.password, user.hash);
         if (result) {
+          const token = jwt.sign(
+            {
+              id: user.id,
+              mail: user.mail,
+            },
+            "6D3R#2aerp4g&d8%q37JAob%F&75",
+            { expiresIn: "1h" }
+          );
           req.session.isLogged = true;
           req.session.userId = user.id;
+          req.session.token = token;
+          console.log(req.session.token);
           res.redirect("/profil");
+          // res.json({ token: token, message: "Connexion réussi !" });
         } else {
           res.render("login", {
             alert: "Mauvais couple identifiant/mot de passe",
+            token: token,
           });
+          // res.status(401).json({ message: "Mauvais mot de passe" });
         }
       } else {
-        throw new Error("Mauvais couple identifiant/mot de passe");
+        // res.status(401).json({ message: "Mauvais mail" });
+        throw new Error("Mauvais mail");
       }
     } catch (error) {
-      console.error(error);
       res.render("login", { alert: error.message });
+      // res.status(401).json({ message: "Action non disponible" });
     }
   },
 
@@ -57,6 +73,15 @@ const authController = {
       req.body.hash = hash;
       const user = new User(req.body);
       await user.create();
+      const token = jwt.sign(
+        {
+          id: user.id,
+          mail: user.mail,
+        },
+        "6D3R#2aerp4g&d8%q37JAob%F&75",
+        { expiresIn: "1h" }
+      );
+      req.session.token = token;
       req.session.isLogged = true;
       req.session.userId = user.id;
       res.redirect("/profil");

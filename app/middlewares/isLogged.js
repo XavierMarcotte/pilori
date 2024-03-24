@@ -1,5 +1,6 @@
 function isLogged(req, res, next) {
-  if (req.session && req.session.isLogged) {
+  if (req.session && req.session.isLogged && req.session.token) {
+    // if (req.session.token) {
     next();
   } else {
     res.status(401).render("error", {

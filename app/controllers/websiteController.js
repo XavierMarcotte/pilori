@@ -1,6 +1,5 @@
 import Website from "../models/Website.js";
 import client from "../database.js";
-import fs from "fs";
 
 const websiteController = {
   all: async function (req, res) {
@@ -46,31 +45,41 @@ const websiteController = {
       const image = req.file.filename;
       const website = new Website({ ...req.body, user_id, image });
       await website.create();
+      res.json({
+        success: true,
+        message: "Le site a été ajouté avec succès.",
+        websiteSlug: website.slug,
+      });
       res.redirect("/tomates/" + website.slug);
     } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: "Erreur lors de l'ajout du site.",
+        error: error.message,
+      });
       res.render("add-site", {
         message: error.message,
       });
     }
   },
 
-  create: async function (req, res) {
+  delete: async function (req, res) {
     try {
-      const website = new Website(req.body);
-      await website.create();
-      res.json({
-        title: website.title,
-        description: website.description,
-        address: website.address,
-        level: website.level,
-        device: website.device,
-        id: website.id,
-        slug: website.slug,
-      });
+      const { slug } = req.params;
+      const website = await Website.read(slug);
+      const result = await website.delete();
+      if (result.rowCount > 0) {
+        res.redirect("/tomates", {
+          message: "Supprimé avec succès",
+        });
+      } else {
+        res.render("/tomates/" + slug, {
+          message: "Le site n'a pas pu être supprimé.",
+        });
+      }
     } catch (error) {
-      console.error(error);
       res.status(500).json({
-        message: error.message,
+        message: "Suppression impossible",
       });
     }
   },
@@ -78,6 +87,7 @@ const websiteController = {
   details: async function (req, res, next) {
     try {
       const { slug } = req.params;
+      console.log(slug);
       const result = await client.query(
         "SELECT * FROM website WHERE slug = $1",
         [slug]
@@ -98,6 +108,26 @@ const websiteController = {
     } catch (error) {
       console.error(error);
       res.status(500).render("error");
+    }
+  },
+  create: async function (req, res) {
+    try {
+      const website = new Website(req.body);
+      await website.create();
+      res.json({
+        title: website.title,
+        description: website.description,
+        address: website.address,
+        level: website.level,
+        device: website.device,
+        id: website.id,
+        slug: website.slug,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        message: error.message,
+      });
     }
   },
 
@@ -134,27 +164,27 @@ const websiteController = {
     }
   },
 
-  delete: async function (req, res) {
-    try {
-      const { id } = req.params;
-      const website = await Website.read(id);
-      const result = await website.delete();
-      if (result.rowCount > 0) {
-        res.json({
-          message: "website supprimé",
-        });
-      } else {
-        res.status(404).json({
-          message: "Le site demandé n'existe pas.",
-        });
-      }
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({
-        message: "Le serveur a rencontré un problème.",
-      });
-    }
-  },
+  // delete: async function (req, res) {
+  //   try {
+  //     const { id } = req.params;
+  //     const website = await Website.read(id);
+  //     const result = await website.delete();
+  //     if (result.rowCount > 0) {
+  //       res.json({
+  //         message: "website supprimé",
+  //       });
+  //     } else {
+  //       res.status(404).json({
+  //         message: "Le site demandé n'existe pas.",
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     res.status(500).json({
+  //       message: "Le serveur a rencontré un problème.",
+  //     });
+  //   }
+  // },
 
   update: async function (req, res) {
     try {

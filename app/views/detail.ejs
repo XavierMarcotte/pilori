@@ -5,7 +5,11 @@
       <header class="detail-header">
         <div class="detail-intro">
           <h1 class="detail-title"><%= website.title %></h1>
-          <img class="detail-image" src="/uploads/<%= website.image %>" alt="Image du site"></img>
+          <img
+            class="detail-image"
+            src="/uploads/<%= website.image %>"
+            alt="Image du site"
+          />
         </div>
       </header>
       <ul class="detail-list">
@@ -27,6 +31,13 @@
         <a class="btn" href="/tomates/<%= website.slug %>/commentaire"
           >Ajouter un commentaire</a
         >
+        <btn class="btn">Jeter une tomate</btn>
+        <form
+          method="POST"
+          action="/tomates/<%= website.slug %>?_method=DELETE"
+        >
+          <button class="btn" type="submit">Supprimer</button>
+        </form>
       </footer>
     </article>
     <h2 class="comment-h2">Commentaires</h2>

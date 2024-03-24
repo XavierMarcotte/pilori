@@ -4,6 +4,7 @@ import * as dotenv from "dotenv";
 import router from "./router.js";
 import addUserData from "./middlewares/addUserData.js";
 import cors from "cors";
+import methodOverride from "method-override";
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.set("views", "./views");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("./public"));
+app.use(methodOverride("_method"));
 
 app.use(
   session({

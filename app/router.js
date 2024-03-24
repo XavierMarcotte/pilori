@@ -6,6 +6,7 @@ import authController from "./controllers/authController.js";
 import userController from "./controllers/userController.js";
 import isLogged from "./middlewares/isLogged.js";
 import commentController from "./controllers/commentController.js";
+import methodOverride from "method-override";
 
 const router = express.Router();
 
@@ -36,6 +37,14 @@ router.post(
   websiteController.formAction
 );
 router.get("/tomates/:slug", websiteController.details);
+
+// Utilisattion du package method-overrride pour gérer la suppresion, avec la méthode delete impossible de la mettre en place
+//Mettre la route côté profil et pas celle ci :
+// router.post(
+//   "/tomates/:slug",
+//   methodOverride("_method"),
+//   websiteController.delete
+// );
 
 router.get(
   "/tomates/:slug/commentaire",

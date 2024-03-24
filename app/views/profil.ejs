@@ -6,13 +6,68 @@
   </section>
   <section class="segment">
     <h2 class="segment-title">Mes sites dénoncés</h2>
-    <% for (const website of websites) { %> <%- include('partials/card' , {
-    website }) %> <% } %>
+    <div class="card-container">
+      <% for (const website of websites) { %> <%- include('partials/card' , {
+      website }) %> <% } %>
+    </div>
   </section>
   <section class="segment">
     <h2 class="segment-title">Mes commentaires ajoutés</h2>
     <% for (const comment of comments) { %> <%- include('partials/comment' , {
     comment }) %> <% } %>
+  </section>
+  <section class="segment">
+    <h2 class="segment-title">Editer mon profil</h2>
+    <form method="POST" action="/profil" class="form">
+      <label class="form-field">
+        Email
+        <input
+          name="mail"
+          type="mail"
+          class="form-input"
+          placeholder="Votre email"
+        />
+      </label>
+      <label class="form-field">
+        Pseudonyme
+        <input
+          name="pseudo"
+          type="text"
+          class="form-input"
+          placeholder="Votre pseudo"
+        />
+      </label>
+      <label class="form-field">
+        Mot de passe actuel
+        <input
+          name="passwordCurrent"
+          type="password"
+          class="form-input"
+          placeholder="Mot de passe"
+        />
+      </label>
+      <label class="form-field">
+        Nouveau mot de passe
+        <input
+          name="newpassword"
+          type="password"
+          class="form-input"
+          placeholder="Mot de passe"
+        />
+      </label>
+      <label class="form-field">
+        Confirmation du mot de passe
+        <input
+          name="Confirmationpassword"
+          type="password"
+          class="form-input"
+          placeholder="Répeter mot de passe"
+        />
+      </label>
+      <div class="segment-actions">
+        <button type="submit" class="btn">Mettre à jour</button>
+      </div>
+    </form>
   </section>
 </main>
 <%- include('partials/footer') %>

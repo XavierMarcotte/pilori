@@ -13,7 +13,7 @@
     "url": "git+https://https://github.com/XavierMarcotte/pilori"
   },
   "keywords": [],
-  "author": "",
+  "author": "Xavier Marcotte",
   "license": "ISC",
   "devDependencies": {
     "node-dev": "^8.0.0"
@@ -26,6 +26,8 @@
     "express": "^4.18.2",
     "express-session": "^1.17.3",
     "fs": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.2",
+    "method-override": "^3.0.0",
     "multer": "^1.4.5-lts.1",
     "pg": "^8.10.0",
     "slugify": "^1.6.6",
