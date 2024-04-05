@@ -20,6 +20,17 @@ const userController = {
       res.status(500).render("error");
     }
   },
+
+  updateProfil: async function (req, res) {
+    try {
+      const { userId } = req.session;
+      const userRead = await User.read(userId);
+      await userRead.update(req.body);
+    } catch (error) {
+      console.error(error);
+      res.redirect("/tomates");
+    }
+  },
 };
 
 export default userController;

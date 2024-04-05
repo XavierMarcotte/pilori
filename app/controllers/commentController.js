@@ -32,59 +32,26 @@ const commentController = {
     }
   },
 
-  createComment: async function (req, res) {
-    try {
-      const comment = new Comment(req.body);
-      await comment.create();
-      res.json({
-        description: comment.description,
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({
-        message: error.message,
-      });
-    }
-  },
-
-  allJsonComment: async function (req, res) {
-    try {
-      const result = await client.query("SELECT * FROM comment");
-      if (result.rowCount > 0) {
-        res.json(result.rows);
-      } else {
-        res.status(404).json({
-          message: "Les commentaires demandé n'existe pas.",
-        });
-      }
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({
-        message: "Le serveur a rencontré un problème.",
-      });
-    }
-  },
-
-  deleteComment: async function (req, res) {
-    try {
-      const { id } = req.params;
-      const comment = await Comment.read(id);
-      const result = await comment.delete();
-      if (result.rowCount > 0) {
-        res.json({
-          message: "Commentaire supprimé",
-        });
-      } else {
-        res.status(404).json({
-          message: "Le commentaire demandé n'existe pas.",
-        });
-      }
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({
-        message: "Le serveur a rencontré un problème.",
-      });
-    }
-  },
+  // deleteComment: async function (req, res) {
+  //   try {
+  //     const { id } = req.params;
+  //     const comment = await Comment.read(id);
+  //     const result = await comment.delete();
+  //     if (result.rowCount > 0) {
+  //       res.json({
+  //         message: "Commentaire supprimé",
+  //       });
+  //     } else {
+  //       res.status(404).json({
+  //         message: "Le commentaire demandé n'existe pas.",
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     res.status(500).json({
+  //       message: "Le serveur a rencontré un problème.",
+  //     });
+  //   }
+  // },
 };
 export default commentController;

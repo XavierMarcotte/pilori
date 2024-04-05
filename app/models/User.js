@@ -1,15 +1,18 @@
 import validator from "validator";
 import client from "../database.js";
+import sanitizeHtml from "sanitize-html";
 
 class User {
   #id;
   #email;
   #hash;
+  #pseudo;
 
   constructor(config) {
     this.id = config.id;
     this.email = config.email;
     this.hash = config.hash;
+    this.pseudo = config.pseudo;
   }
 
   get id() {
@@ -23,7 +26,9 @@ class User {
   get hash() {
     return this.#hash;
   }
-
+  get pseudo() {
+    return this.#pseudo;
+  }
   set id(value) {
     if (typeof value !== "number" && typeof value !== "undefined") {
       throw new Error("Id incorrect");
@@ -43,6 +48,10 @@ class User {
       throw new Error("Mot de passe invalide");
     }
     this.#hash = value;
+  }
+
+  set pseudo(value) {
+    this.#pseudo = sanitizeHtml(value);
   }
 
   async create() {
@@ -74,12 +83,13 @@ class User {
     const text = `
       UPDATE "user" 
       SET 
-        "email" = $1
-        "hash" = $2
-      WHERE id = $3;
+        "email" = $1,
+        "hash" = $2,
+        "pseudo" = $3
+      WHERE id = $4;
     `;
-    const values = [this.email, this.hash, this.id];
-    client.query(text, values);
+    const values = [this.email, this.hash, this.pseudo, this.id];
+    await client.query(text, values);
   }
 
   async delete() {
@@ -88,7 +98,7 @@ class User {
       WHERE id = $1;
     `;
     const values = [this.id];
-    client.query(text, values);
+    await client.query(text, values);
   }
 }
 

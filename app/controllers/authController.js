@@ -15,7 +15,7 @@ const authController = {
         'SELECT * FROM "user" WHERE "email" = $1',
         [req.body.email]
       );
-      console.log(foundUser);
+      // console.log(foundUser);
       if (foundUser.rowCount > 0) {
         const user = foundUser.rows[0];
         const result = await bcrypt.compare(req.body.password, user.hash);
@@ -31,7 +31,7 @@ const authController = {
           req.session.isLogged = true;
           req.session.userId = user.id;
           req.session.token = token;
-          console.log(req.session.token);
+          // console.log(req.session.token);
           res.redirect("/profil");
           // res.json({ token: token, message: "Connexion réussi !" });
         } else {

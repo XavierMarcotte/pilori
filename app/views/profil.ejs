@@ -2,7 +2,13 @@
 <main class="content">
   <h1 class="content-title">Mon compte</h1>
   <section class="segment">
+    <% if (user.pseudo == '') { %>
+    <h2 class="segment-title">
+      Créer votre pseudonyme ! Le formulaire est en bas de page
+    </h2>
+    <% } else { %>
     <h2 class="segment-title"><%= user.email %></h2>
+    <% } %>
   </section>
   <section class="segment">
     <h2 class="segment-title">Mes sites dénoncés</h2>
@@ -18,7 +24,8 @@
   </section>
   <section class="segment">
     <h2 class="segment-title">Editer mon profil</h2>
-    <form method="POST" action="/profil" class="form">
+    <form method="PUT" action="/profil" class="form">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
       <label class="form-field">
         Email
         <input
@@ -40,28 +47,10 @@
       <label class="form-field">
         Mot de passe actuel
         <input
-          name="passwordCurrent"
+          name="password"
           type="password"
           class="form-input"
           placeholder="Mot de passe"
-        />
-      </label>
-      <label class="form-field">
-        Nouveau mot de passe
-        <input
-          name="newpassword"
-          type="password"
-          class="form-input"
-          placeholder="Mot de passe"
-        />
-      </label>
-      <label class="form-field">
-        Confirmation du mot de passe
-        <input
-          name="Confirmationpassword"
-          type="password"
-          class="form-input"
-          placeholder="Répeter mot de passe"
         />
       </label>
       <div class="segment-actions">

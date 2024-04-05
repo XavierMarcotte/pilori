@@ -1,3 +1,4 @@
+// Pour gérer l'affichage des icones
 function e(e) {
   return e && e.__esModule ? e.default : e;
 }
@@ -2823,40 +2824,3 @@ var n;
     });
   }),
   e(n()).replace();
-const o = document.getElementById("menuToggler"),
-  t = document.querySelector(".menu"),
-  l = document.getElementById("searchToggler"),
-  i = document.querySelector(".search");
-o.addEventListener("click", () => {
-  t.classList.toggle("menu--on"), i.classList.remove("search--on");
-}),
-  l.addEventListener("click", () => {
-    i.classList.toggle("search--on"), t.classList.remove("menu--on");
-  });
-const r = document.querySelector(".footer-totop");
-r.addEventListener("click", () => {
-  window.scroll({ top: 0, left: 0, behavior: "smooth" });
-});
-let a = !1;
-window.addEventListener("scroll", () => {
-  window.scrollY > 0 && !a
-    ? ((a = !0), r.classList.add("footer-totop--on"))
-    : 0 === window.scrollY &&
-      a &&
-      ((a = !1), r.classList.remove("footer-totop--on"));
-});
-const s = document.querySelectorAll(".btn--view-mode");
-for (const e of s)
-  e.addEventListener("click", () => {
-    c(e.dataset.mode);
-  });
-function c(e) {
-  const n = document.querySelectorAll(".card-container");
-  for (const o of n)
-    o.classList.remove("card-container--list", "card-container--grid"),
-      o.classList.add(`card-container--${e}`);
-  for (const n of s)
-    n.dataset.mode === e
-      ? n.classList.add("btn--hidden")
-      : n.classList.remove("btn--hidden");
-}

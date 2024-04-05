@@ -1,7 +1,9 @@
 <article class="card">
   <div class="card-tags">
     <% if (website.level) { %>
-    <span class="card-tag"> <%= website.level %> </span>
+    <span class="card-tag" id="level_card"> <%= website.level %> </span>
+    <% } %> <% if (website.device) { %>
+    <span class="card-tag"> <%= website.device %> </span>
     <% } %>
     <span class="card-tag card-tag--red">
       <%= website.total_comments %>
@@ -15,9 +17,9 @@
   />
   <div class="card-content">
     <h3 class="card-title"><%= website.title %></h3>
-    <% if (website.description) { %>
+    <!-- <% if (website.description) { %>
     <p class="card-desc"><%= website.description %></p>
-    <% } %>
+    <% } %> -->
     <a class="card-more" href="/tomates/<%= website.slug %>">Lire la suite</a>
   </div>
   <footer class="card-actions">

@@ -34,9 +34,12 @@ const websiteController = {
     }
   },
 
-  form: function (req, res) {
-    res.render("add-site");
-    console.log(req.session.userId);
+  form: async function (req, res) {
+    const csrfToken = req.csrfToken();
+    req.session.csrfToken = csrfToken;
+    res.render("add-site", { csrfToken });
+    // console.log({ csrfToken });
+    // console.log(req.session.userId);
   },
 
   formAction: async function (req, res) {
@@ -45,38 +48,33 @@ const websiteController = {
       const image = req.file.filename;
       const website = new Website({ ...req.body, user_id, image });
       await website.create();
-      res.json({
-        success: true,
-        message: "Le site a été ajouté avec succès.",
-        websiteSlug: website.slug,
-      });
+      // res.json({
+      //   success: true,
+      //   message: "Le site a été ajouté avec succès.",
+      //   websiteSlug: website.slug,
+      // });
       res.redirect("/tomates/" + website.slug);
+      // console.log({ csrfToken: req.session.csrfToken });
     } catch (error) {
-      res.status(500).json({
-        success: false,
-        message: "Erreur lors de l'ajout du site.",
-        error: error.message,
-      });
+      // res.status(500).json({
+      //   success: false,
+      //   message: "Erreur lors de l'ajout du site.",
+      //   error: error.message,
+      // });
       res.render("add-site", {
         message: error.message,
+        // csrfToken: req.session.csrfToken,
       });
     }
   },
 
-  delete: async function (req, res) {
+  deleteWebsite: async function (req, res) {
     try {
-      const { slug } = req.params;
-      const website = await Website.read(slug);
-      const result = await website.delete();
-      if (result.rowCount > 0) {
-        res.redirect("/tomates", {
-          message: "Supprimé avec succès",
-        });
-      } else {
-        res.render("/tomates/" + slug, {
-          message: "Le site n'a pas pu être supprimé.",
-        });
-      }
+      // const { slug } = req.params;
+      // const website = new Website({});
+      // await website.delete(slug);
+      console.log("suppresion");
+      // res.redirect("/profil");
     } catch (error) {
       res.status(500).json({
         message: "Suppression impossible",
@@ -87,20 +85,19 @@ const websiteController = {
   details: async function (req, res, next) {
     try {
       const { slug } = req.params;
-      console.log(slug);
       const result = await client.query(
         "SELECT * FROM website WHERE slug = $1",
         [slug]
       );
-      const websiteQuery = `SELECT * FROM website WHERE slug = $1`;
-      const websiteResult = await client.query(websiteQuery, [slug]);
-      const websiteId = websiteResult.rows[0].id;
+      const websiteId = result.rows[0].id;
       const commentQuery = `SELECT * FROM comment WHERE website_id = $1`;
       const commentResult = await client.query(commentQuery, [websiteId]);
+      console.log(req.session.userId);
       if (result.rowCount > 0) {
         res.render("detail", {
           website: result.rows[0],
           comments: commentResult.rows,
+          user__id: req.session.userId,
         });
       } else {
         next();
@@ -108,118 +105,6 @@ const websiteController = {
     } catch (error) {
       console.error(error);
       res.status(500).render("error");
-    }
-  },
-  create: async function (req, res) {
-    try {
-      const website = new Website(req.body);
-      await website.create();
-      res.json({
-        title: website.title,
-        description: website.description,
-        address: website.address,
-        level: website.level,
-        device: website.device,
-        id: website.id,
-        slug: website.slug,
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({
-        message: error.message,
-      });
-    }
-  },
-
-  allJson: async function (req, res) {
-    try {
-      const result = await client.query("SELECT * FROM website");
-      res.json(result.rows);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({
-        message: "Le serveur a rencontré un problème.",
-      });
-    }
-  },
-
-  detailsJson: async function (req, res) {
-    try {
-      const { id } = req.params;
-      const result = await client.query("SELECT * FROM website WHERE id = $1", [
-        id,
-      ]);
-      if (result.rowCount > 0) {
-        res.json(result.rows[0]);
-      } else {
-        res.status(404).json({
-          message: "Le site demandé n'existe pas.",
-        });
-      }
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({
-        message: "Le serveur a rencontré un problème.",
-      });
-    }
-  },
-
-  // delete: async function (req, res) {
-  //   try {
-  //     const { id } = req.params;
-  //     const website = await Website.read(id);
-  //     const result = await website.delete();
-  //     if (result.rowCount > 0) {
-  //       res.json({
-  //         message: "website supprimé",
-  //       });
-  //     } else {
-  //       res.status(404).json({
-  //         message: "Le site demandé n'existe pas.",
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     res.status(500).json({
-  //       message: "Le serveur a rencontré un problème.",
-  //     });
-  //   }
-  // },
-
-  update: async function (req, res) {
-    try {
-      const { id } = req.params;
-      const website = await Website.read(id);
-      if (req.body.title) {
-        website.title = req.body.title;
-      }
-      if (req.body.description) {
-        website.description = req.body.description;
-      }
-      if (req.body.address) {
-        website.address = req.body.address;
-      }
-      if (req.body.level) {
-        website.level = req.body.level;
-      }
-      if (req.body.device) {
-        website.device = req.body.device;
-      }
-      await website.update();
-      res.json({
-        title: website.title,
-        description: website.description,
-        address: website.address,
-        level: website.level,
-        device: website.device,
-        id: website.id,
-        slug: website.slug,
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({
-        message: error.message,
-      });
     }
   },
 };

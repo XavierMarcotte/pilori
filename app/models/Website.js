@@ -1,6 +1,7 @@
 import validator from "validator";
 import slugify from "slugify";
 import client from "../database.js";
+import sanitizeHtml from "sanitize-html";
 
 class Website {
   #id;
@@ -86,7 +87,10 @@ class Website {
   }
 
   set description(value) {
-    this.#description = value;
+    this.#description = sanitizeHtml(value, {
+      allowedTags: [],
+      allowedAttributes: {},
+    });
   }
 
   set address(value) {
@@ -177,14 +181,15 @@ class Website {
     client.query(text, values);
   }
 
-  async delete() {
-    const text = `
-        DELETE FROM website 
-        WHERE slug = $1;
-    `;
-    const values = [this.slug];
-    const result = await client.query(text, values);
-    return result;
+  async delete(slug) {
+    try {
+      const text = `DELETE FROM website WHERE slug = $1;`;
+      const values = [slug];
+      await client.query(text, values);
+    } catch (error) {
+      console.error("Erreur lors de la suppression du site :", error);
+      throw error;
+    }
   }
 }
 

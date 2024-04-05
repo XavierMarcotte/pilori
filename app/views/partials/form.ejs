@@ -9,6 +9,7 @@
     class="form"
     enctype="multipart/form-data"
   >
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
     <label class="form-field">
       Titre du dysfonctionnement
       <input name="title" type="text" class="form-input" />

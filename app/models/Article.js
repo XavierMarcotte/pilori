@@ -1,40 +1,42 @@
-import client from "../database.js";
+import client from "../database";
 import sanitizeHtml from "sanitize-html";
 
-class Comment {
+class Article {
   #id;
+  #titre;
   #description;
   #user_id;
-  #website_id;
 
   constructor(config) {
     this.id = config.id;
+    this.titre = config.titre;
     this.description = config.description;
     this.user_id = config.user_id;
-    this.website_id = config.website_id;
   }
 
   get id() {
     return this.#id;
   }
 
+  get titre() {
+    return this.#titre;
+  }
+
   get description() {
     return this.#description;
   }
-
   get user_id() {
     return this.#user_id;
   }
-
-  get website_id() {
-    return this.#website_id;
-  }
-
   set id(value) {
     if (typeof value !== "number" && typeof value !== "undefined") {
-      throw new Error("Id incorrecte");
+      throw new Error("Id incorrect");
     }
     this.#id = value;
+  }
+
+  set titre(value) {
+    this.#titre = value;
   }
 
   set description(value) {
@@ -48,24 +50,20 @@ class Comment {
     this.#user_id = value;
   }
 
-  set website_id(value) {
-    this.#website_id = value;
-  }
-
   async create() {
     const text = `
-      INSERT INTO comment ("description", "user_id", "website_id") 
+      INSERT INTO article ("titre", "description", "user_id") 
       VALUES ($1, $2, $3) 
       RETURNING id;
     `;
-    const values = [this.description, this.user_id, this.website_id];
+    const values = [this.titre, this.description, this.user_id];
     const result = await client.query(text, values);
     this.#id = result.rows[0].id;
   }
 
   static async read(id) {
     const text = `
-      SELECT * FROM comment
+      SELECT * FROM article
       WHERE id = $1;
     `;
     const values = [id];
@@ -79,18 +77,19 @@ class Comment {
 
   async update() {
     const text = `
-    UPDATE comment 
+    UPDATE article 
       SET 
-        "description" = $1
-      WHERE id = $2;
+        "titre" = $1,
+        "description" = $2
+      WHERE id = $3;
     `;
-    const values = [this.description];
+    const values = [this.titre, this.description];
     client.query(text, values);
   }
 
   async delete() {
     const text = `
-      DELETE FROM comment 
+      DELETE FROM article 
       WHERE id = $1;
     `;
     const values = [this.id];
@@ -98,4 +97,4 @@ class Comment {
   }
 }
 
-export default Comment;
+export default Article;
