@@ -88,7 +88,7 @@ class User {
         "pseudo" = $3
       WHERE id = $4;
     `;
-    const values = [this.email, this.hash, this.pseudo, this.id];
+    const values = [this.email, this.hash, this.#pseudo, this.id];
     await client.query(text, values);
   }
 

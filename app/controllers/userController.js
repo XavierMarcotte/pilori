@@ -1,5 +1,6 @@
 import User from "../models/User.js";
 import client from "../database.js";
+import bcrypt from "bcrypt";
 
 const userController = {
   profil: async function (req, res) {
@@ -23,9 +24,16 @@ const userController = {
 
   updateProfil: async function (req, res) {
     try {
-      const { userId } = req.session;
-      const userRead = await User.read(userId);
-      await userRead.update(req.body);
+      // console.log(req.body.password);
+      const hash = await bcrypt.hash(req.body.password, 10);
+      req.body.hash = hash;
+      req.body.id = req.session.userId;
+      // console.log(req.body.hash);
+      // console.log(req.body.pseudo);
+      console.log(req.body);
+      const userRead = new User({ ...req.body });
+      await userRead.update();
+      res.redirect("/profil");
     } catch (error) {
       console.error(error);
       res.redirect("/tomates");

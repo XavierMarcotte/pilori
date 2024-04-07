@@ -7,7 +7,7 @@
       Créer votre pseudonyme ! Le formulaire est en bas de page
     </h2>
     <% } else { %>
-    <h2 class="segment-title"><%= user.email %></h2>
+    <h2 class="segment-title"><%= user.pseudo %></h2>
     <% } %>
   </section>
   <section class="segment">
@@ -24,12 +24,13 @@
   </section>
   <section class="segment">
     <h2 class="segment-title">Editer mon profil</h2>
-    <form method="PUT" action="/profil" class="form">
-      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+    <form method="POST" action="/profil" class="form">
+      <input type="hidden" name="_method" value="PUT" />
+      <!-- <input type="hidden" name="_csrf" value="{{ csrfToken }}" /> -->
       <label class="form-field">
         Email
         <input
-          name="mail"
+          name="email"
           type="mail"
           class="form-input"
           placeholder="Votre email"
