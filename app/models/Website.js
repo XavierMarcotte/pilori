@@ -184,10 +184,10 @@ class Website {
   async delete() {
     // ici j'ai eu une erreur -> je supprimais le site puis les commentaires : erreur qui me disais que je violais la contrainte les clés étrangères d'autres tables. Pour régler le problème je supprime d'abbord les commentaires puis le site -> ok !
     const comments = `DELETE FROM comment WHERE website_id = $1;`;
-    const commentvalues = [this.id];
-    client.query(comments, commentvalues);
-    const text = `DELETE FROM website WHERE id = $1;`;
     const values = [this.id];
+    // const commentvalues = [this.id];
+    client.query(comments, values);
+    const text = `DELETE FROM website WHERE id = $1;`;
     client.query(text, values);
   }
 }
