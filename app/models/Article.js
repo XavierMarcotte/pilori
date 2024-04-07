@@ -1,15 +1,21 @@
-import client from "../database";
+import client from "../database.js";
 import sanitizeHtml from "sanitize-html";
+import slugify from "slugify";
 
 class Article {
   #id;
-  #titre;
+  #title;
+  #slug;
   #description;
   #user_id;
 
   constructor(config) {
     this.id = config.id;
-    this.titre = config.titre;
+    this.title = config.title;
+    this.slug = slugify(config.title, {
+      lower: true,
+      strict: true,
+    });
     this.description = config.description;
     this.user_id = config.user_id;
   }
@@ -18,8 +24,12 @@ class Article {
     return this.#id;
   }
 
-  get titre() {
-    return this.#titre;
+  get title() {
+    return this.#title;
+  }
+
+  get slug() {
+    return this.#slug;
   }
 
   get description() {
@@ -28,6 +38,7 @@ class Article {
   get user_id() {
     return this.#user_id;
   }
+
   set id(value) {
     if (typeof value !== "number" && typeof value !== "undefined") {
       throw new Error("Id incorrect");
@@ -35,13 +46,17 @@ class Article {
     this.#id = value;
   }
 
-  set titre(value) {
-    this.#titre = value;
+  set title(value) {
+    this.#title = value;
+  }
+
+  set slug(value) {
+    this.#slug = value;
   }
 
   set description(value) {
     this.#description = sanitizeHtml(value, {
-      allowedTags: [],
+      allowedTags: ["p", "br"],
       allowedAttributes: {},
     });
   }
@@ -52,11 +67,11 @@ class Article {
 
   async create() {
     const text = `
-      INSERT INTO article ("titre", "description", "user_id") 
-      VALUES ($1, $2, $3) 
+      INSERT INTO article ("title", "slug", "description", "user_id") 
+      VALUES ($1, $2, $3, $4) 
       RETURNING id;
     `;
-    const values = [this.titre, this.description, this.user_id];
+    const values = [this.title, this.slug, this.description, this.user_id];
     const result = await client.query(text, values);
     this.#id = result.rows[0].id;
   }
@@ -79,11 +94,12 @@ class Article {
     const text = `
     UPDATE article 
       SET 
-        "titre" = $1,
-        "description" = $2
-      WHERE id = $3;
+        "title" = $1,
+        "slug" = $2
+        "description" = $3
+      WHERE id = $4;
     `;
-    const values = [this.titre, this.description];
+    const values = [this.title, this.slug, this.description];
     client.query(text, values);
   }
 

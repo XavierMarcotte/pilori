@@ -264,6 +264,9 @@ a:hover {
   background-color: #f0f8ff;
   border-color: #00008b;
 }
+.article_area {
+  min-height: 30rem;
+}
 .btn {
   color: #fff;
   background-color: var(--blue-light);
@@ -312,6 +315,14 @@ a:hover {
   overflow: hidden;
   box-shadow: 0 10px 15px -5px #0003;
 }
+
+.cardArticle {
+  height: 10rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
 @media screen and (min-width: 50rem) {
   .card {
     width: calc(50% - 1rem);
@@ -320,6 +331,11 @@ a:hover {
 @media screen and (min-width: 60rem) {
   .card {
     width: calc(33.3333% - 1.33333rem);
+  }
+}
+@media screen and (min-width: 60rem) {
+  .cardArticle {
+    width: calc(50% - 1rem);
   }
 }
 .card-container {
@@ -343,6 +359,9 @@ a:hover {
 }
 .card-content {
   padding: 1rem;
+}
+.card-contentArticle {
+  display: flex;
 }
 .card-tag {
   background-color: var(--blue-light);

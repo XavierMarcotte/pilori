@@ -43,7 +43,7 @@ const authController = {
         }
       } else {
         // res.status(401).json({ message: "Mauvais mail" });
-        throw new Error("Mauvais mail");
+        throw new Error("Mauvais couple identifiant/mot de passe");
       }
     } catch (error) {
       res.render("login", { alert: error.message });

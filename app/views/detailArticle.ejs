@@ -1,0 +1,13 @@
+<%- include('partials/header') %>
+<main class="content">
+  <section class="segment">
+    <h1 class="detail-title"><%= article.title %></h1>
+    <p class="detail-content"><%= article.description %></p>
+    <% const articleDate = new Date(article.date_added); const day =
+    articleDate.getDate(); const month = articleDate.toLocaleString('default', {
+    month: 'short' }); const year = articleDate.getFullYear(); const
+    formattedDate = day + ' ' + month + ' ' + year; %>
+    <p class="">Rédigé le <%= formattedDate %></p>
+  </section>
+</main>
+<%- include('partials/footer') %>

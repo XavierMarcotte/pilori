@@ -1,8 +1,7 @@
 <%- include('partials/header') %>
 <main class="content">
-  <form method="POST"
-  action="/delete/<%= website.slug %>" class="segment">
-  <input type="hidden" name="_method" value="DELETE">
+  <form method="POST" action="/tomates/<%= website.slug %>" class="segment">
+    <input type="hidden" name="_method" value="DELETE" />
     <article class="detail">
       <header class="detail-header">
         <div class="detail-intro">
@@ -42,6 +41,7 @@
           >Jeter une tomate</btn
         >
         <% if (website.user_id === user__id) { %>
+
         <button type="submit" class="btn btn--red">
           Supprimer dysfonctionnement
         </button>
@@ -54,6 +54,6 @@
     <footer class="segment-actions">
       <a href="/tomates" class="btn"> Retour à la liste </a>
     </footer>
-  </section>
+  </form>
 </main>
 <%- include('partials/footer') %>

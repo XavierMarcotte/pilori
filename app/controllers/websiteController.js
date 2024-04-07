@@ -37,9 +37,9 @@ const websiteController = {
   form: async function (req, res) {
     const csrfToken = req.csrfToken();
     req.session.csrfToken = csrfToken;
-    res.render("add-site", { csrfToken });
-    // console.log({ csrfToken });
-    // console.log(req.session.userId);
+    console.log(csrfToken);
+    res.render("add-site", { csrfToken: req.csrfToken() });
+    // res.render("add-site");
   },
 
   formAction: async function (req, res) {
@@ -48,6 +48,9 @@ const websiteController = {
       const image = req.file.filename;
       const website = new Website({ ...req.body, user_id, image });
       await website.create();
+      const csrfToken = req.csrfToken();
+      req.session.csrfToken = csrfToken;
+      console.log(csrfToken);
       // res.json({
       //   success: true,
       //   message: "Le site a été ajouté avec succès.",
@@ -70,12 +73,18 @@ const websiteController = {
 
   deleteWebsite: async function (req, res) {
     try {
-      // const { slug } = req.params;
-      // const website = new Website({});
-      // await website.delete(slug);
-      console.log("suppresion");
-      // res.redirect("/profil");
+      const { slug } = req.params;
+      const result = await client.query(
+        "SELECT * FROM website WHERE slug = $1",
+        [slug]
+      );
+      const websiteId = result.rows[0].id;
+      // console.log(websiteId);
+      const website = await Website.read(websiteId);
+      await website.delete();
+      res.redirect("/profil");
     } catch (error) {
+      console.error(error);
       res.status(500).json({
         message: "Suppression impossible",
       });

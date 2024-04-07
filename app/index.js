@@ -5,8 +5,7 @@ import router from "./router.js";
 import addUserData from "./middlewares/addUserData.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-
-// import methodOverride from "method-override";
+import methodOverride from "method-override";
 
 dotenv.config();
 
@@ -19,13 +18,23 @@ app.set("views", "./views");
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("./public"));
-// app.use(methodOverride("_method"));
+app.use(methodOverride("_method"));
 
 app.use(
   session({
     saveUninitialized: true,
     resave: true,
     secret: "testpilori",
+  })
+);
+
+app.use(
+  methodOverride(function (req, res) {
+    if (req.body && typeof req.body === "object" && "_method" in req.body) {
+      var method = req.body._method;
+      delete req.body._method;
+      return method;
+    }
   })
 );
 

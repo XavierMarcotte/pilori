@@ -1,0 +1,22 @@
+<%- include('partials/header') %>
+<main class="content">
+  <h1 class="content-title">Ajouter un article</h1>
+  <section class="segment">
+    <h2 class="segment-title">Ecrivez votre article</h2>
+    <form method="POST" action="/article/form" class="form">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+      <label class="form-field">
+        Titre de votre article
+        <input name="title" type="text" class="form-input" />
+      </label>
+      <label class="form-field">
+        Contenu de l'article
+        <textarea name="description" class="form-input article_area"></textarea>
+      </label>
+      <div class="segment-actions">
+        <button type="submit" class="btn">Ajouter votre article</button>
+      </div>
+    </form>
+  </section>
+</main>
+<%- include('partials/footer') %>

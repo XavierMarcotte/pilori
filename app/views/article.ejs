@@ -1,0 +1,12 @@
+<%- include('partials/header') %>
+<main class="content">
+  <h1 class="content-title">Articles</h1>
+  <section class="segment">
+    <h2 class="segment-title">Tous nos articles sur l'accessibilité</h2>
+    <div class="card-container">
+      <% for (const article of articles) { %> <%-
+      include('partials/cardArticle', { article }) %> <% } %>
+    </div>
+  </section>
+</main>
+<%- include('partials/footer') %>

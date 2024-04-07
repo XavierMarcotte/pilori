@@ -5,13 +5,12 @@ import websiteController from "./controllers/websiteController.js";
 import authController from "./controllers/authController.js";
 import userController from "./controllers/userController.js";
 import commentController from "./controllers/commentController.js";
+import articleController from "./controllers/articleController.js";
 import isLogged from "./middlewares/isLogged.js";
 import csrf from "csurf";
 import bodyParser from "body-parser";
-// import methodOverride from "method-override";
 
 const router = express.Router();
-
 const csfrprotection = csrf({ cookie: true });
 const parseForm = bodyParser.urlencoded({ extended: false });
 
@@ -44,12 +43,13 @@ router.post(
   "/tomates/denoncer",
   isLogged,
   upload.single("image"),
-  parseForm,
   csfrprotection,
+  parseForm,
   websiteController.formAction
 );
+
 router.get("/tomates/:slug", websiteController.details);
-router.delete("/delete/:slug", websiteController.deleteWebsite);
+router.delete("/tomates/:slug", websiteController.deleteWebsite);
 
 router.get(
   "/tomates/:slug/commentaire",
@@ -70,6 +70,19 @@ router.get("/deconnexion", isLogged, authController.logout);
 
 router.get("/profil", isLogged, userController.profil);
 router.put("/profil", isLogged, userController.updateProfil);
+
+router.get("/article", articleController.page);
+// router.get("/article/form", isLogged, csfrprotection, articleController.form);
+// router.post(
+//   "/article/form",
+//   isLogged,
+//   parseForm,
+//   csfrprotection,
+//   articleController.formAction
+// );
+router.get("/article/form", isLogged, articleController.form);
+router.post("/article/form", isLogged, articleController.formAction);
+router.get("/article/:slug", articleController.details);
 
 router.use(mainController.notFound);
 
