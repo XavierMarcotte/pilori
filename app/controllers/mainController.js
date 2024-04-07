@@ -16,19 +16,19 @@ const mainController = {
   },
 
   legals: function (req, res) {
-    res.render("coming-soon", {
+    res.render("mentions", {
       title: "Mentions légales",
     });
   },
 
   plan: function (req, res) {
-    res.render("coming-soon", {
+    res.render("plan", {
       title: "Plan du site",
     });
   },
 
   contact: function (req, res) {
-    res.render("coming-soon", {
+    res.render("contact", {
       title: "Contact",
     });
   },
