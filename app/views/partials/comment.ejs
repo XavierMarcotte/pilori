@@ -1,12 +1,15 @@
 <article class="comment-section">
   <% if (comment.description) { %>
   <p class="comment-description"><%= comment.description %></p>
-  <% } %> <% if (comment.date_added) { %> <% var commentDate = new
-  Date(comment.date_added); var day = commentDate.getDate(); var month =
-  commentDate.toLocaleString('default', { month: 'short' }); var year =
-  commentDate.getFullYear(); var formattedDate = day + ' ' + month + ' ' + year;
-  %>
+  <% } %> <% if (comment.date_added) { %> <% const commentDate = new
+  Date(comment.date_added); const day = commentDate.getDate(); const month =
+  commentDate.toLocaleString('default', { month: 'short' }); const year =
+  commentDate.getFullYear(); const formattedDate = day + ' ' + month + ' ' +
+  year; %>
   <p class="comment-date"><%= formattedDate %></p>
-  <% } %>
-  <p class="">Ajouté par compte N°<%= comment.user_id %></p>
+  <% } %> <% if (user.pseudo) { %>
+  <p class="">Ajouté par <%= website.pseudo %></p>
+  <%} else {%>
+  <p class="">Ajouté par compte N°<%= website.id %></p>
+  <%}%>
 </article>

@@ -101,6 +101,9 @@ const websiteController = {
       const websiteId = result.rows[0].id;
       const commentQuery = `SELECT * FROM comment WHERE website_id = $1`;
       const commentResult = await client.query(commentQuery, [websiteId]);
+      const user = `SELECT * FROM "user" INNER JOIN website ON "user".id = website.user_id`;
+      console.log(user);
+      const resultUser = await client.query(user, [result.rows[0].user_id]);
       console.log(req.session.userId);
       if (result.rowCount > 0) {
         res.render("detail", {
