@@ -95,16 +95,16 @@ const websiteController = {
     try {
       const { slug } = req.params;
       const result = await client.query(
-        "SELECT * FROM website WHERE slug = $1",
+        `SELECT * FROM "website" WHERE slug = $1`,
         [slug]
       );
       const websiteId = result.rows[0].id;
-      const commentQuery = `SELECT * FROM comment WHERE website_id = $1`;
+      const commentQuery = `SELECT * FROM comment INNER JOIN "user" ON "comment".user_id = "user".id WHERE website_id = $1`;
       const commentResult = await client.query(commentQuery, [websiteId]);
-      const user = `SELECT * FROM "user" INNER JOIN website ON "user".id = website.user_id`;
-      console.log(user);
-      const resultUser = await client.query(user, [result.rows[0].user_id]);
-      console.log(req.session.userId);
+      // const user = `SELECT * FROM "user" INNER JOIN website ON "user".id = website.user_id`;
+      // console.log(user);
+      // const resultUser = await client.query(user, [result.rows[0].user_id]);
+      // console.log(req.session.userId);
       if (result.rowCount > 0) {
         res.render("detail", {
           website: result.rows[0],

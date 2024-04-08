@@ -7,9 +7,9 @@
   commentDate.getFullYear(); const formattedDate = day + ' ' + month + ' ' +
   year; %>
   <p class="comment-date"><%= formattedDate %></p>
-  <% } %> <% if (user.pseudo) { %>
-  <p class="">Ajouté par <%= website.pseudo %></p>
+  <% } %> <% if (comment.pseudo) { %>
+  <p class="">Ajouté par <%= comment.pseudo %></p>
   <%} else {%>
-  <p class="">Ajouté par compte N°<%= website.id %></p>
+  <p class="">Ajouté par compte N°<%= comment.id %></p>
   <%}%>
 </article>
