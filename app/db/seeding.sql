@@ -18,10 +18,10 @@ VALUES
 
 INSERT INTO "website" ("title", "slug", "description", "address", "device", "level", "image", "user_id")
 VALUES 
-('Google', 'google', 'Il y a un tout petit problème.', 'https://www.google.com/', 'Ordinateur', 'Casse-tête', 'ph1.jpg', 1),
-('Wikipédia', 'wikipedia', 'Pas jojo', 'https://fr.wikipedia.org/', 'Mobile', 'Bloquant', 'ph2.jpg', 2),
-('Facebook', 'facebook', 'Nul', 'https://facebook.com/', 'Mobile', 'Bloquant', 'ph3.jpg', 3),
-('Npm', 'npm', 'Des soucis', 'https://www.npmjs.com/', 'Mobile', 'Casse-tête', 'ph4.jpg', 4);
+('Google', 'google', 'Il y a un tout petit problème sur : sur l''accueil du site on ne peut pas activer nos extensions de navigateur.. Personnelement je trouve ça très chiant', 'https://www.google.com/', 'Ordinateur', 'Casse-tête', 'ph1.jpg', 1),
+('Wikipédia', 'wikipedia', 'Le site ne s''ouvre plus sur téléphone quand on passe par Safari j''ai essayé sur d''autres navigateurs et je n''ai eu aucun problème', 'https://fr.wikipedia.org/', 'Mobile', 'Bloquant', 'ph2.jpg', 2),
+('Facebook', 'facebook', 'Sur téléphone les messages bloquent à cause de messenger..', 'https://facebook.com/', 'Mobile', 'Bloquant', 'ph3.jpg', 3),
+('Npm', 'npm', 'Impossible d''y accèder sur téléphone ou alors il faut le faire en navigation privé', 'https://www.npmjs.com/', 'Mobile', 'Casse-tête', 'ph4.jpg', 4);
 
 
 INSERT INTO "comment" ("description", "user_id", "website_id") 

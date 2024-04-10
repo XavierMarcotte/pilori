@@ -50,7 +50,7 @@ const websiteController = {
       await website.create();
       const csrfToken = req.csrfToken();
       req.session.csrfToken = csrfToken;
-      console.log(csrfToken);
+      // console.log(csrfToken);
       // res.json({
       //   success: true,
       //   message: "Le site a été ajouté avec succès.",
@@ -85,9 +85,7 @@ const websiteController = {
       res.redirect("/profil");
     } catch (error) {
       console.error(error);
-      res.status(500).json({
-        message: "Suppression impossible",
-      });
+      res.status(500).render("error");
     }
   },
 

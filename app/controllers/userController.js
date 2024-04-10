@@ -9,7 +9,7 @@ const userController = {
       const userId = req.session.userId;
       const websiteQuery = `SELECT *, (SELECT COUNT(*) FROM "comment" WHERE "website_id" = "website"."id") AS total_comments FROM "website" WHERE user_id = $1`;
       const websiteResult = await client.query(websiteQuery, [userId]);
-      const commentQuery = `SELECT * FROM comment WHERE user_id = $1`;
+      const commentQuery = `SELECT * FROM "comment" INNER JOIN "user" ON "comment".user_id = "user".id WHERE user_id = $1`;
       const commentResult = await client.query(commentQuery, [userId]);
       res.render("profil", {
         user: user,
@@ -21,7 +21,6 @@ const userController = {
       res.status(500).render("error");
     }
   },
-
   updateProfil: async function (req, res) {
     try {
       // console.log(req.body.password);
@@ -39,6 +38,41 @@ const userController = {
       res.redirect("/tomates");
     }
   },
+
+  // updateProfil: async function (req, res) {
+  //   try {
+  //     const previouspassword = await bcrypt.hash(req.body.previouspassword, 10);
+  //     const userId = req.session.userId;
+  //     const selectPassword = `SELECT * FROM "user" WHERE id = $1`;
+  //     const resultPassword = await client.query(selectPassword, [userId]);
+  //     if (resultPassword.rows.length > 0) {
+  //       const user = resultPassword.rows[0];
+  //       const hashMatch = await bcrypt.compare(
+  //         req.body.previouspassword,
+  //         user.hash
+  //       );
+
+  //       if (hashMatch) {
+  //         const userRead = new User({ ...req.body });
+  //         await userRead.update();
+  //         res.redirect("/profil");
+  //       } else {
+  //         console.log("Mauvais mot de passe précédent");
+  //         res.redirect("/profil");
+  //         console.log(req.body.previouspassword);
+  //         console.log(req.body.password);
+  //         console.log(previouspassword);
+  //         console.log(resultPassword.rows[0].hash);
+  //       }
+  //     } else {
+  //       console.log("Utilisateur non trouvé");
+  //       res.redirect("/profil");
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     res.redirect("/tomates");
+  //   }
+  // },
 };
 
 export default userController;
